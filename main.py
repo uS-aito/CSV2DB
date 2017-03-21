@@ -27,7 +27,7 @@ class databaser(object):
     def readColumnName(self,file):
         """
         1.現在のオフセットを取得
-        2.オフセットを0にして一行読み込み
+        2.オフセットを0にして一行読み込み,ColumnNameを取得
         3.元のオフセットをセット
             3.1.ただし、元のオフセットが0の場合はやらない
         """
@@ -41,8 +41,8 @@ class databaser(object):
     def createTable(self,connection,tblname,columnnames):
         def createSql(tblname,columnnames):
             sql = "create table "+tblname+" ("
-            for var in columnnames:
-                sql = sql + var + ","
+            for name in columnnames:
+                sql = sql + name + ","
             sql = sql[:-1] + ")"
             return sql
         c = connection.cursor()
