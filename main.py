@@ -15,16 +15,16 @@ class databaser(object):
         4.2.一行追加
     5.sql文を読み込んで実行
     """
-    def parseArgs(self):
+    def _parseArgs(self):
         return sys.argv[-1]
     
-    def openCsv(self,filename):
+    def _openCsv(self,filename):
         return open(file=filename,mode="r")
 
-    def createDB(self,dbname):
+    def _connectDB(self,dbname):
         return sqlite3.connect(database=dbname)
 
-    def readColumnName(self,file):
+    def _readColumnName(self,file):
         """
         1.現在のオフセットを取得
         2.オフセットを0にして一行読み込み,ColumnNameを取得
@@ -38,7 +38,7 @@ class databaser(object):
             file.seek(current_offset)
         return first_columun[:-1].split(",")
 
-    def createTable(self,connection,tblname,columnnames):
+    def _createTable(self,connection,tblname,columnnames):
         def createSql(tblname,columnnames):
             sql = "create table "+tblname+" ("
             for name in columnnames:
@@ -50,11 +50,11 @@ class databaser(object):
         c.execute(sql)
         connection.commit()
 
-    def readValuesList(self,file):
+    def _readValuesList(self,file):
         values_list = file.readlines()
         return values_list
     
-    def addValues(self,connection,tblname,valuesList):
+    def _addValues(self,connection,tblname,valuesList):
         def createSql(tblname,values):
             sql = "insert into "+tblname+" values ("
             for var in range(len(values)):
@@ -105,19 +105,30 @@ class databaser(object):
         else:
             printSqlResult(result,c)
 
+    def makeDB(self,csvfile,dbfile,tblname):
+        with self._openCsv(csvfile) as f:
+            connection = self._connectDB(dbfile)
+            column_name = self._readColumnName(f)
+            self._createTable(connection,tblname,column_name)
+            values_list = self._readValuesList(f)
+            self._addValues(connection,tblname,values_list)
+        print("Table " + tblname + " was created.")
+        return connection
+
+
 def main():
     TABLENAME = "temp"
 
     dber = databaser()
-    filename = dber.parseArgs()
-    with dber.openCsv(filename) as f:
-        connection = dber.createDB(":memory:")
-        column_name = dber.readColumnName(f)
-        dber.createTable(connection,TABLENAME,column_name)
-        values_list = dber.readValuesList(f)
-        dber.addValues(connection,TABLENAME,values_list)
-    print("Table " + TABLENAME + " was created.")
-
+    # filename = dber.parseArgs()
+    # with dber.openCsv(filename) as f:
+    #     connection = dber.connectDB(":memory:")
+    #     column_name = dber.readColumnName(f)
+    #     dber.createTable(connection,TABLENAME,column_name)
+    #     values_list = dber.readValuesList(f)
+    #     dber.addValues(connection,TABLENAME,values_list)
+    # print("Table " + TABLENAME + " was created.")
+    connection = dber.makeDB("test.csv",":memory:","temp")
     while True:
         dber.readSql(connection)
 
