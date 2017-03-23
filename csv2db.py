@@ -1,8 +1,12 @@
 #coding:utf-8
+# Copyright (c) 2016 uS-aito
+# Released under the MIT license
+# http://opensource.org/licenses/mit-license.php
+
 import sys
 import sqlite3
 
-class databaser(object):
+class csv2db(object):
     """
     1.コマンドライン引数を解析する
     2.ファイルを開く
@@ -115,10 +119,10 @@ class databaser(object):
         print("Table " + tblname + " was created.")
         return connection
 
-    def executeSql(self,connection,sql):
+    def executeSql(self,connection,sql,tpl=()):
         c = connection.cursor()
         try:
-            result = c.execute(sql)
+            result = c.execute(sql,tpl)
         except:
             print("Invalid SQL")
             return None
@@ -135,9 +139,9 @@ class databaser(object):
 def main():
     TABLENAME = "temp"
 
-    dber = databaser()
-    connection = dber.makeDB("test.csv",":memory:","temp")
-    print(dber.executeSql(connection,"select * from temp"))
+    c2d = csv2db()
+    connection = c2d.makeDB("test.csv",":memory:","temp")
+    print(c2d.executeSql(connection,"select * from temp"))
 
 if __name__ == '__main__':
     main()
