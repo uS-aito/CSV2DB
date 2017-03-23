@@ -115,6 +115,22 @@ class databaser(object):
         print("Table " + tblname + " was created.")
         return connection
 
+    def executeSql(self,connection,sql):
+        c = connection.cursor()
+        try:
+            result = c.execute(sql)
+        except:
+            print("Invalid SQL")
+            return None
+        else:
+            data = []
+            names = []
+            for name in c.description:
+                names.append(name[0])
+            data.append(tuple(names))
+            for value_tupple in result:
+                data.append(value_tupple)
+        return data
 
 def main():
     TABLENAME = "temp"
@@ -129,8 +145,9 @@ def main():
     #     dber.addValues(connection,TABLENAME,values_list)
     # print("Table " + TABLENAME + " was created.")
     connection = dber.makeDB("test.csv",":memory:","temp")
-    while True:
-        dber.readSql(connection)
+    # while True:
+    #     dber.readSql(connection)
+    print(dber.executeSql(connection,"select * from temp"))
 
 if __name__ == '__main__':
     main()
