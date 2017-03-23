@@ -136,17 +136,7 @@ def main():
     TABLENAME = "temp"
 
     dber = databaser()
-    # filename = dber.parseArgs()
-    # with dber.openCsv(filename) as f:
-    #     connection = dber.connectDB(":memory:")
-    #     column_name = dber.readColumnName(f)
-    #     dber.createTable(connection,TABLENAME,column_name)
-    #     values_list = dber.readValuesList(f)
-    #     dber.addValues(connection,TABLENAME,values_list)
-    # print("Table " + TABLENAME + " was created.")
     connection = dber.makeDB("test.csv",":memory:","temp")
-    # while True:
-    #     dber.readSql(connection)
     print(dber.executeSql(connection,"select * from temp"))
 
 if __name__ == '__main__':
