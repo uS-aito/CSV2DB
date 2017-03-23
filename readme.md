@@ -29,11 +29,13 @@ CSVファイル*csvfile*から、データベースファイル*dbfile*に対し
 コネクションオブジェクト*connection*は`makeDB`メソッドで得られるほか、`sqlite3.connect`メソッドの戻り値を利用することもできます。  
 実行結果の例を以下に示します。  
 ```test.csv
+# test.csv
 hoge,foo,bar
 1,2,3
 4,5,6
 ```
 ```select * from temp
+>>> executeSql(connection,"select * from temp")
 [('hoge', 'foo', 'bar'), ('1', '2', '3'), ('4', '5', '6')]
 ```
 ***注意***  
@@ -46,4 +48,4 @@ hoge,foo,bar
 
 ## License
 本ソフトウェアはMITライセンスに準拠します。  
-*[MIT License](http://opensource.org/licenses/mit-license.php)
+* [MIT License](http://opensource.org/licenses/mit-license.php)
