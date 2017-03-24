@@ -5,6 +5,7 @@
 
 import sys
 import sqlite3
+import argparse
 
 class csv2db(object):
     """
@@ -18,10 +19,7 @@ class csv2db(object):
         4.1.一行読み込み
         4.2.一行追加
     5.sql文を読み込んで実行
-    """
-    def _parseArgs(self):
-        return sys.argv[-1]
-    
+    """    
     def _openCsv(self,filename):
         return open(file=filename,mode="r")
 
@@ -139,9 +137,20 @@ class csv2db(object):
 def main():
     TABLENAME = "temp"
 
+    p = argparse.ArgumentParser()
+    p.add_argument("-c", "--csv-file-path", help="Path to CSV file")
+    p.add_argument("-t", "--table-name", help="Table Name")
+    p.add_argument("-d","--database-file-name", help="Database file name")
+    args = p.parse_args()
+    print(args)
+    csvFileName = args.csv_file_path
+    tableName = args.table_name
+    databaseFileName = args.database_file_name
+
     c2d = csv2db()
-    connection = c2d.makeDB("test.csv",":memory:","temp")
-    print(c2d.executeSql(connection,"select * from temp"))
+    connection = c2d.makeDB(csvFileName,databaseFileName,tableName)
+    while True:
+        c2d.readSql(connection)
 
 if __name__ == '__main__':
     main()
