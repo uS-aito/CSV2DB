@@ -21,7 +21,7 @@ Table temp was created.
 
 ## Document
 #### csv2db.makeDB(csvfile,dbfile,tblname)
-CSVファイル*csvfile*から、データベースファイル*dbfile*に対しテーブル名*tblname*のDBを作成します。内部的にpython標準ライブラリのsqlite3を使用しており、*dbfile*に特別な名前`:memory:`を使用するとメモリ上にDBを作成します。  
+CSVファイル*csvfile*から、データベースファイル*dbfile*に対しテーブル名*tblname*のDBを作成します。*dbfile*に特別な名前`:memory:`を使用するとメモリ上にDBを作成します。  
 このメソッドはSQLiteデータベースコネクションオブジェクトを返します。このオブジェクトを利用することで、作成したDBへSQLを発行したり、結果を取得することが可能です。
 
 #### csv2db.executeSql(connection,sql,tpl=())
@@ -34,7 +34,8 @@ hoge,foo,bar
 1,2,3
 4,5,6
 ```
-```select * from temp
+```
+# select * from temp
 >>> executeSql(connection,"select * from temp")
 [('hoge', 'foo', 'bar'), ('1', '2', '3'), ('4', '5', '6')]
 ```
