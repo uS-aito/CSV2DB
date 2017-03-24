@@ -8,11 +8,11 @@ sqliteのDBファイル名やテーブル名を指定することができます
 
 ## Demo
 ```
->>> import databaser
->>> dber = databaser()
->>> connection = dber.makeDB("test.csv",":memory:","temp")
+>>> import csv2db
+>>> c2d = csv2db()
+>>> connection = c2d.makeDB("test.csv",":memory:","temp")
 Table temp was created.
->>> print(dber.executeSql(connection,"select * from temp"))
+>>> print(c2d.executeSql(connection,"select * from temp"))
 [('hoge', 'foo', 'bar'), ('1', '2', '3'), ('4', '5', '6')]
 ```
 
